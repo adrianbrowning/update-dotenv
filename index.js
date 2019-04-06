@@ -3,12 +3,32 @@ const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
 
-function escapeNewlines (str) {
-  return str.replace(/\n/g, '\\n')
+function escapeCharacters (str) {
+  let wrapper = ''
+
+  // If the string contains a space or dollar sign, wrap it in single quotes.
+  if (str.match(/[\s$]/)) {
+    wrapper = '\''
+  }
+
+  // If the string contains a newline, escape it and wrap in double quotes.
+  // Also escape any dollar signs to prevent interpolation.
+  if (str.match(/\n/)) {
+    str = str.replace(/\$/g, '\\$').replace(/\n/g, '\\n')
+    wrapper = '"'
+  }
+
+  // If we're wrapping the string, escape any wrapper characters.
+  if (wrapper !== '') {
+    str = str.replace(new RegExp(wrapper, 'g'), `\\${wrapper}`)
+  }
+
+  // Wrap the string (if necessary) and return it.
+  return [wrapper, str, wrapper].join('')
 }
 
 function format (key, value) {
-  return `${key}=${escapeNewlines(value)}`
+  return `${key}=${escapeCharacters(value)}`
 }
 
 module.exports = async function updateDotenv (env) {
