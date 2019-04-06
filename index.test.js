@@ -25,12 +25,32 @@ describe('update-dotenv', () => {
 
   test('properly writes multi-line strings', async () => {
     await updateDotenv({ FOO: 'bar\nbaz' })
-    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO=bar\\nbaz')
+    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO="bar\\nbaz"')
   })
 
   test('appends new variables to existing variables', async () => {
     await updateDotenv({ FIRST: 'foo' })
     await updateDotenv({ SECOND: 'bar' })
     expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FIRST=foo\nSECOND=bar')
+  })
+
+  test('wraps strings with spaces in quotes', async () => {
+    await updateDotenv({ FOO: 'foo bar' })
+    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO=\'foo bar\'')
+  })
+
+  test('wraps strings with dollar signs in quotes', async () => {
+    await updateDotenv({ FOO: '$foo $bar' })
+    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO=\'$foo $bar\'')
+  })
+
+  test('escapes single quotes', async () => {
+    await updateDotenv({ FOO: '\'foo\' "$and" \'bar\'' })
+    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO=\'\\\'foo\\\' "$and" \\\'bar\\\'\'')
+  })
+
+  test('escapes double quotes', async () => {
+    await updateDotenv({ FOO: "\"foo\"\n'$and'\n\"bar\"" })
+    expect(fs.readFileSync('.env', 'UTF-8')).toEqual('FOO="\\"foo\\"\\n\'\\$and\'\\n\\"bar\\""')
   })
 })
