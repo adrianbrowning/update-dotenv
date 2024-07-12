@@ -1,9 +1,9 @@
-const dotenv = require('dotenv')
-const fs = require('fs')
-const path = require('path')
-const { promisify } = require('util')
+import dotenv from 'dotenv'
+import fs from 'node:fs'
+import path from 'node:path'
+import { promisify } from 'node:util'
 
-function escapeCharacters (str) {
+function escapeCharacters (str: string) {
   let wrapper = ''
 
   // If the string contains a space or dollar sign, wrap it in single quotes.
@@ -27,19 +27,19 @@ function escapeCharacters (str) {
   return [wrapper, str, wrapper].join('')
 }
 
-function format (key, value) {
+function format (key: string, value: string) {
   return `${key}=${escapeCharacters(value)}`
 }
 
-module.exports = async function updateDotenv (env) {
+export default async function updateDotenv(env: Record<string, any>) {
   const filename = path.join(process.cwd(), '.env')
 
   // Merge with existing values
   try {
     const existing = dotenv.parse(await promisify(fs.readFile)(filename, 'utf-8'))
     env = Object.assign(existing, env)
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
+  } catch (err:any) {
+    if ("code" in err && err.code !== 'ENOENT') {
       throw err
     }
   }

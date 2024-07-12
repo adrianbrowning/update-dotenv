@@ -1,35 +1,52 @@
 {
-  "name": "update-dotenv",
-  "version": "1.1.1",
+  "name": "@gingacodemonkey/update-dotenv",
+  "version": "1.0.0",
   "description": "Write updates to a .env file",
-  "main": "index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "test": "jest && standard"
+    "build": "tsup src/index.ts --dts --format esm,cjs --outDir dist --minify --clean",
+    "test": "node --import tsx --test test/*.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bkeepers/update-dotenv.git"
+    "url": "git+https://github.com/adrianbrowning/update-dotenv.git"
   },
   "keywords": [
     "dotenv"
   ],
-  "author": "Brandon Keepers <bkeepers@github.com>",
+  "exports": {
+    ".": {
+      "import": {
+        "import": "./dist/index.js",
+        "require": "./built/index.js",
+        "default": "./built/index.js",
+        "types": "./built/index.d.ts"
+      },
+      "require": {
+        "import": "./built/index.cjs",
+        "require": "./built/index.cjs",
+        "default": "./built/index.cjs",
+        "types": "./built/index.d.cts"
+      }
+    }
+  },
+  "author": "Adrian Elton-Browning <gingacodemonkey@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bkeepers/update-dotenv/issues"
+    "url": "https://github.com/adrianbrowning/update-dotenv/issues"
   },
-  "homepage": "https://github.com/bkeepers/update-dotenv#readme",
+  "homepage": "https://github.com/adrianbrowning/update-dotenv#readme",
   "devDependencies": {
-    "dotenv": "^6.0.0",
-    "jest": "^23.5.0",
-    "standard": "^11.0.1"
+    "dotenv": "^16.4.5",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3",
+    "tsx": "^4.16.2",
+    "@types/node": "^20.14.10"
   },
   "peerDependencies": {
     "dotenv": "*"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
   }
 }

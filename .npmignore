@@ -1,0 +1,6 @@
+.git
+node_modules
+test/
+jsr.json
+tsconfig.json
+.idea
