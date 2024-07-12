@@ -3,24 +3,31 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { promisify } from 'node:util'
 
-function escapeCharacters (str: string) {
+function escapeCharacters (str: unknown) {
   let wrapper = ''
 
+  // If str is not a string, return as is for now
+  if(typeof str !== "string") return str;
+
   // If the string contains a space or dollar sign, wrap it in single quotes.
-  if (str.match(/[\s$]/)) {
-    wrapper = '\''
+  if (/\W/.test(str)) {
+    wrapper = "'";
   }
 
   // If the string contains a newline, escape it and wrap in double quotes.
   // Also escape any dollar signs to prevent interpolation.
   if (str.match(/\n/)) {
-    str = str.replace(/\$/g, '\\$').replace(/\n/g, '\\n')
+    str = str
+        .replace(/\$/g, '\\$')
+        .replace(/\n/g, '\\n')
     wrapper = '"'
   }
 
   // If we're wrapping the string, escape any wrapper characters.
   if (wrapper !== '') {
-    str = str.replace(new RegExp(wrapper, 'g'), `\\${wrapper}`)
+    // @ts-expect-error str really is a string
+    str = str
+        .replace(new RegExp(wrapper, 'g'), `\\${wrapper}`)
   }
 
   // Wrap the string (if necessary) and return it.
