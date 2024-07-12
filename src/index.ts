@@ -31,6 +31,12 @@ function format (key: string, value: string) {
   return `${key}=${escapeCharacters(value)}`
 }
 
+/**
+ * Updates the .env file with the provided environment variables and merges them with the existing values.
+ *
+ * @param env The environment variables to be added or updated in the .env file.
+ * @returns A promise that resolves to the updated environment variables.
+ */
 export default async function updateDotenv(env: Record<string, any>): Promise<Record<string, any>> {
   const filename = path.join(process.cwd(), '.env')
 

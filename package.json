@@ -1,6 +1,6 @@
 {
   "name": "@gingacodemonkey/update-dotenv",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Write updates to a .env file",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -8,7 +8,9 @@
   "type": "module",
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs --outDir dist --minify --clean",
-    "test": "node --import tsx --test test/*.ts"
+    "test": "node --import tsx --test test/*.ts",
+    "publish:npm": "npm publish --access public",
+    "publish:jsr": "pnpm dlx jsr publish"
   },
   "repository": {
     "type": "git",
@@ -21,15 +23,15 @@
     ".": {
       "import": {
         "import": "./dist/index.js",
-        "require": "./built/index.js",
-        "default": "./built/index.js",
-        "types": "./built/index.d.ts"
+        "require": "./dist/index.js",
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
       },
       "require": {
-        "import": "./built/index.cjs",
-        "require": "./built/index.cjs",
-        "default": "./built/index.cjs",
-        "types": "./built/index.d.cts"
+        "import": "./dist/index.cjs",
+        "require": "./dist/index.cjs",
+        "default": "./dist/index.cjs",
+        "types": "./dist/index.d.cts"
       }
     }
   },
