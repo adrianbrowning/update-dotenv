@@ -9,10 +9,11 @@ This adds support for wrapping lines with special characters (space or $) with a
 ## Installation
 
 ```shell
-// npm
-npm install dotenv update-dotenv
 // pnpm
-pnpm add dotenv update-dotenv
+pnpm add dotenv @gingacodemonkey/update-dotenv
+
+// npm
+npm install dotenv @gingacodemonkey/update-dotenv
 
 //jsr
 npx jsr add @gingacodemonkey/update-dotenv
@@ -20,16 +21,6 @@ pnpm dlx jsr add @gingacodemonkey/update-dotenv
 ```
 
 ## Usage
-
-### CJS
-
-```js
-const updateDotenv = require('@gingacodemonkey/update-dotenv')
-
-updateDotenv({
-  MY_VARIABLE: 'new value'
-}).then((newEnv) => console.log('Done!', newEnv))
-```
 
 ### MJS
 
@@ -40,6 +31,18 @@ updateDotenv({
   MY_VARIABLE: 'new value'
 }).then((newEnv) => console.log('Done!', newEnv))
 ```
+
+### CJS
+
+```js
+const {default: updateDotenv} = require('@gingacodemonkey/update-dotenv');
+
+updateDotenv({
+  MY_VARIABLE: 'new value'
+}).then((newEnv) => console.log('Done!', newEnv))
+```
+
+
 
 ## License
 
