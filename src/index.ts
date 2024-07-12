@@ -31,7 +31,7 @@ function format (key: string, value: string) {
   return `${key}=${escapeCharacters(value)}`
 }
 
-export default async function updateDotenv(env: Record<string, any>) {
+export default async function updateDotenv(env: Record<string, any>): Promise<Record<string, any>> {
   const filename = path.join(process.cwd(), '.env')
 
   // Merge with existing values
